@@ -38,7 +38,7 @@ export default function Results(): JSX.Element {
         <CardHeader
           title={recipe.title}
           titleTypographyProps={{ variant: 'h6' }}
-          sx={{ height: '2.5em', overflow: 'hidden' }}
+          sx={{ height: '5em', overflow: 'hidden' }}
         />
         <CardMedia
           component="img"

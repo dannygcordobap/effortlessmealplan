@@ -4,6 +4,7 @@ import { Typography, AppBar, CssBaseline, Grid, Toolbar, Container, Button } fro
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { LocalDining } from '@mui/icons-material';
+import Results from './components/Results';
 
 function App() {
   const [calories, setCalories] = React.useState(0);
@@ -31,26 +32,21 @@ function App() {
       <AppBar position="relative">
         <Toolbar>
           <LocalDining />
-          <Typography variant="h5">Effortless Meal Plan</Typography>
+          <Typography variant="h4">&ensp; Effortless Meal Plan</Typography>
         </Toolbar>
       </AppBar>
 
       <main>
         <div>
           <Container maxWidth="sm">
-            <Typography variant="h3" align="center" color="textPrimary" gutterBottom>
+            <Typography variant="h5" align="center" color="textPrimary" gutterBottom>
               Macro Constraints
             </Typography>
           </Container>
         </div>
         <div>
-          <Box
-            component="form"
-            sx={{ alignItems: 'center', marginTop: 8, display: 'flex', flexDirection: 'column', width: 1250 }}
-            noValidate
-            autoComplete="off"
-          >
-            <Grid container spacing={2} alignItems="center" justifyContent="center">
+          <Box component="main" sx={{ margin: 'auto', p: 2 }}>
+            <Grid container spacing={2} sx={{ maxWidth: '750px' }}>
               <Grid item xs={12} sm={6}>
                 <TextField
                   type="number"
@@ -117,6 +113,7 @@ function App() {
                 </Button>
               </Grid>
             </Grid>
+            <Results />
           </Box>
         </div>
       </main>
