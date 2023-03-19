@@ -1,27 +1,20 @@
+import logo from './logo.svg';
 import './App.css';
 import React from 'react';
-import { AppBar, Box, CssBaseline, Toolbar, Typography } from '@mui/material';
-import Form from './Components/Form';
 
 function App() {
-  const appbar = (
-    <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
-      <Toolbar>
-        <Typography variant="h5" sx={{ margin: 'auto' }}>
-          Effortless Meal Plan
-        </Typography>
-      </Toolbar>
-    </AppBar>
-  );
   return (
-    <Box sx={{ display: 'flex' }}>
-      <CssBaseline />
-      {appbar}
-      <Box component="main" sx={{ margin: 'auto', p: 2 }}>
-        <Toolbar />
-        <Form />
-      </Box>
-    </Box>
+    <div className="App">
+      <header className="App-header">
+        <img src={logo} className="App-logo" alt="logo" />
+        <p>
+          Edit <code>src/App.js</code> and save to reload.
+        </p>
+        <a className="App-link" href="https://reactjs.org" target="_blank" rel="noopener noreferrer">
+          Learn React
+        </a>
+      </header>
+    </div>
   );
 }
 
