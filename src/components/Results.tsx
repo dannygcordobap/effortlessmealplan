@@ -1,10 +1,10 @@
-import { Box, Card, CardHeader, CardMedia, CardContent, Grid, Divider, Typography } from '@mui/material';
+import { Box, Card, CardHeader, CardMedia, CardContent, Grid, Divider, Typography, Button } from '@mui/material';
 import mock_response from '../util/mock_response.json';
 import React from 'react';
+import { Link } from '@mui/icons-material';
 
 export default function Results(): JSX.Element {
   let response = mock_response.results;
-  let border = { border: '1px solid #000' };
 
   const getNutritionContent = (recipe) => {
     let nutrients = {
@@ -39,6 +39,11 @@ export default function Results(): JSX.Element {
           title={recipe.title}
           titleTypographyProps={{ variant: 'h6' }}
           sx={{ height: '5em', overflow: 'hidden' }}
+          action={
+            <Button startIcon={<Link />} href={recipe.sourceUrl} target="blank">
+              View
+            </Button>
+          }
         />
         <CardMedia
           component="img"
@@ -62,5 +67,5 @@ export default function Results(): JSX.Element {
     </Grid>
   );
 
-  return <Box sx={{ margin: 'auto', maxWidth: '750px' }}>{grid}</Box>;
+  return <Box sx={{ margin: 'auto', maxWidth: '800px' }}>{grid}</Box>;
 }
