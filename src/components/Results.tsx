@@ -1,33 +1,65 @@
-import { Box, Card, CardHeader, CardMedia, CardContent, Grid, Divider, Typography, Button, Link } from '@mui/material';
-import mock_response from '../util/mock_response.json';
+import {
+  Box,
+  Card,
+  CardHeader,
+  CardMedia,
+  CardContent,
+  Grid,
+  Divider,
+  Typography,
+  Button,
+  Tooltip,
+} from '@mui/material';
 import React from 'react';
 import ModeFanOffIcon from '@mui/icons-material/ModeFanOff';
 import GrassIcon from '@mui/icons-material/Grass';
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FlareIcon from '@mui/icons-material/Flare';
+import { Link } from '@mui/icons-material';
 
-const getIcons = (recipe) => {
-  let iconCategories = ['vegan', 'vegetarian', 'dairyFree', 'glutenFree', 'veryHealthy'];
+export default function Results(props) {
+  const getIcons = (recipe) => {
+    let iconCategories = ['vegan', 'vegetarian', 'dairyFree', 'glutenFree', 'veryHealthy'];
+    let style = {
+      marginTop: 1.5,
+    };
 
-  return iconCategories.map((category) => {
-    switch (category) {
-      case 'vegan':
-        return recipe[category] === true ? <GrassIcon /> : null;
-      case 'vegetarian':
-        return recipe[category] === true ? <ModeFanOffIcon /> : null;
-      case 'dairyFree':
-        return recipe[category] === true ? <FiberManualRecordIcon /> : null;
-      case 'glutenFree':
-        return recipe[category] === true ? <FlareIcon /> : null;
-      case 'veryHealthy':
-        return recipe[category] === true ? <FavoriteBorderIcon /> : null;
-    }
-  });
-};
-
-export default function Results() {
-  let response = mock_response.results;
+    return iconCategories.map((category) => {
+      switch (category) {
+        case 'vegan':
+          return recipe[category] === true ? (
+            <Tooltip title="Vegan">
+              <GrassIcon sx={style} />
+            </Tooltip>
+          ) : null;
+        case 'vegetarian':
+          return recipe[category] === true ? (
+            <Tooltip title="Vegetarian">
+              <ModeFanOffIcon sx={style} />
+            </Tooltip>
+          ) : null;
+        case 'dairyFree':
+          return recipe[category] === true ? (
+            <Tooltip title="Dairy Free">
+              <FiberManualRecordIcon sx={style} />
+            </Tooltip>
+          ) : null;
+        case 'glutenFree':
+          return recipe[category] === true ? (
+            <Tooltip title="Gluten Free">
+              <FlareIcon sx={style} />
+            </Tooltip>
+          ) : null;
+        case 'veryHealthy':
+          return recipe[category] === true ? (
+            <Tooltip title="Very Healthy">
+              <FavoriteBorderIcon sx={style} />
+            </Tooltip>
+          ) : null;
+      }
+    });
+  };
 
   const getNutritionContent = (recipe) => {
     let nutrients = {
@@ -64,7 +96,7 @@ export default function Results() {
       <Card variant="outlined">
         <CardHeader
           title={recipe.title}
-          titleTypographyProps={{ variant: 'h6' }}
+          titleTypographyProps={{ variant: 'subtitle1', gutterBottom: true }}
           sx={{ height: '5em', overflow: 'hidden' }}
           action={
             <Button startIcon={<Link />} href={recipe.sourceUrl} target="blank">
@@ -85,7 +117,7 @@ export default function Results() {
 
   const grid = (
     <Grid container item columnSpacing={2} rowSpacing={2}>
-      {response.map((recipe) => getRecipePreviewCard(recipe))}
+      {props.recipes.map((recipe) => getRecipePreviewCard(recipe))}
     </Grid>
   );
 

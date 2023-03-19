@@ -26,8 +26,8 @@ export default async function getRecipes(
   protein: number,
   calories: number,
   tolerance: number
-): Promise<Object> {
+): Promise<any> {
   let requestParameters = getRequestParameters(getRequestNutrientParameters(carbs, fat, protein, calories, tolerance));
-  let url = 'https://api.spoonacular.com/recipes/complexSearch' + getQueryStringParameters(requestParameters);
+  let url = `https://api.spoonacular.com/recipes/complexSearch?${getQueryStringParameters(requestParameters)}`;
   return (await fetch(url)).json();
 }

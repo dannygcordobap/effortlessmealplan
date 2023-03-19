@@ -1,15 +1,20 @@
-import React from 'react';
-import { Typography, Card, Grid, Container, Button } from '@mui/material';
+import React, { useState } from 'react';
+import { Typography, Card, Grid, Container, Button, Alert, AlertTitle } from '@mui/material';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
+import getRecipes from '../util/spoonacular';
 
-export default function App() {
-  const [calories, setCalories] = React.useState(600);
-  const [fats, setFats] = React.useState(30);
-  const [carbs, setCarbs] = React.useState(50);
-  const [protein, setProtein] = React.useState(20);
-  const [macroErrorText, setMacroErrorText] = React.useState('');
-  const [caloriesErrorText, setCaloriesErrorText] = React.useState('');
+export default function Form(props) {
+  const [calories, setCalories] = useState(600);
+  const [loading, setLoading] = useState(false);
+  const [fats, setFats] = useState(30);
+  const [carbs, setCarbs] = useState(50);
+  const [protein, setProtein] = useState(20);
+  const [tolerance, setTolerance] = useState(0);
+  const [emptyResponse, setEmptyResponse] = useState(false);
+  const [macroErrorText, setMacroErrorText] = useState('');
+  const [caloriesErrorText, setCaloriesErrorText] = useState('');
+  const [toleranceErrorText, setToleranceErrorText] = useState('');
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -21,6 +26,25 @@ export default function App() {
     if (fats + carbs + protein !== 100) {
       setMacroErrorText('Please have  the sum of Fats, Carbs, and Protein equal 100');
     } else setMacroErrorText('');
+
+    if (tolerance <= 14) {
+      setToleranceErrorText('The minimum tolerance is 15%');
+    }
+
+    if (caloriesErrorText === '' && macroErrorText === '' && toleranceErrorText === '') {
+      setLoading(true);
+      getRecipes(carbs, fats, protein, calories, tolerance)
+        .then((response) => {
+          props.setResponse(response.results);
+          setEmptyResponse(response.results.length === 0);
+        })
+        .catch((e) => {
+          console.log(e);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }
   };
 
   return (
@@ -99,14 +123,17 @@ export default function App() {
                     id="wiggleRoom"
                     label="Wiggle Room"
                     name="wiggleRoom"
-                    defaultValue={0}
+                    onChange={(e) => setTolerance(parseInt(e.target.value))}
+                    defaultValue={20}
+                    error={!!toleranceErrorText}
+                    helperText={toleranceErrorText}
                   />
                 </Grid>
               </Grid>
             </Card>
             <Grid item xs={12}>
-              <Box sx={{ float: 'right' }}>
-                <Button type="submit" variant="contained" onClick={onSubmit} sx={{ mt: 3, mb: 2 }}>
+              <Box sx={{ float: 'right', marginBottom: 2 }}>
+                <Button type="submit" variant="contained" onClick={onSubmit} disabled={loading}>
                   Show Recipes
                 </Button>
               </Box>
@@ -114,6 +141,15 @@ export default function App() {
           </Box>
         </div>
       </Card>
+      <Box sx={{ marginTop: 2 }}>
+        {emptyResponse ? (
+          <Alert severity="error">
+            <AlertTitle>Oops!</AlertTitle>
+            No results were returned, try adjusting your constraints or increasing the tolerance to get more recipe
+            matches!
+          </Alert>
+        ) : null}
+      </Box>
     </>
   );
 }

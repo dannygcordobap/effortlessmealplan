@@ -22,8 +22,8 @@ export interface RequestNutrientParameters {
 
 const getCalorieConstraints = (calories: number, tolerance: number): NutrientConstraints => {
   return {
-    min: calories * (1.0 - tolerance),
-    max: calories * (1.0 + tolerance),
+    min: calories * (1.0 - tolerance / 100),
+    max: calories * (1.0 + tolerance / 100),
   };
 };
 
@@ -33,8 +33,8 @@ const getMacroInGrams = (
   calorieConstraints: NutrientConstraints
 ): NutrientConstraints => {
   return {
-    min: (calorieConstraints.min * macroPercentage) / caloriesPerGram,
-    max: (calorieConstraints.min * macroPercentage) / caloriesPerGram,
+    min: (calorieConstraints.min * (macroPercentage / 100)) / caloriesPerGram,
+    max: (calorieConstraints.max * (macroPercentage / 100)) / caloriesPerGram,
   };
 };
 
