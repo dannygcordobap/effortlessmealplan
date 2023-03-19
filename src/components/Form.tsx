@@ -24,14 +24,16 @@ export default function Form(props) {
     } else setCaloriesErrorText('');
 
     if (fats + carbs + protein !== 100) {
-      setMacroErrorText('Please have  the sum of Fats, Carbs, and Protein equal 100');
+      setMacroErrorText('The sum of Fats, Carbs, and Protein must equal 100');
     } else setMacroErrorText('');
 
-    if (tolerance <= 14) {
+    if (tolerance < 15) {
       setToleranceErrorText('The minimum tolerance is 15%');
+    } else {
+      setToleranceErrorText('');
     }
 
-    if (caloriesErrorText === '' && macroErrorText === '' && toleranceErrorText === '') {
+    if (caloriesErrorText.length === 0 && macroErrorText.length === 0 && toleranceErrorText.length === 0) {
       setLoading(true);
       getRecipes(carbs, fats, protein, calories, tolerance)
         .then((response) => {
@@ -121,7 +123,7 @@ export default function Form(props) {
                     type="number"
                     InputProps={{ inputProps: { min: 50 } }}
                     id="wiggleRoom"
-                    label="Wiggle Room"
+                    label="Tolerance %"
                     name="wiggleRoom"
                     onChange={(e) => setTolerance(parseInt(e.target.value))}
                     defaultValue={20}
@@ -142,7 +144,10 @@ export default function Form(props) {
         </div>
       </Card>
       <Box sx={{ marginTop: 2 }}>
-        {emptyResponse ? (
+        {emptyResponse &&
+        caloriesErrorText.length === 0 &&
+        macroErrorText.length === 0 &&
+        toleranceErrorText.length === 0 ? (
           <Alert severity="error">
             <AlertTitle>Oops!</AlertTitle>
             No results were returned, try adjusting your constraints or increasing the tolerance to get more recipe
