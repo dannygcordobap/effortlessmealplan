@@ -1,8 +1,27 @@
-import { Box, Card, CardHeader, CardMedia, CardContent, Grid, Divider, Typography } from '@mui/material';
+import { Box, Card, CardHeader, CardMedia, CardContent, Grid, Divider, Typography, Icon } from '@mui/material';
 import mock_response from '../util/mock_response.json';
 import React from 'react';
+import ModeFanOffIcon from '@mui/icons-material/ModeFanOff';
+import GrassIcon from '@mui/icons-material/Grass';
+import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import FlareIcon from '@mui/icons-material/Flare';
 
-export default function Results(): JSX.Element {
+const getIcons = (recipe) => {
+  let iconCategories = [ 'vegan','vegetarian','dairyFree', 'glutenFree','veryHealthy']
+
+  return iconCategories.map((category) => {
+    switch(category){
+      case 'vegan': return recipe[category] ? (<GrassIcon />) : null;
+      case 'vegetarian': return recipe[category] ? (<ModeFanOffIcon/>) : null;
+      case 'dairyFree': return recipe[category] ? (<FiberManualRecordIcon/>) : null;
+      case 'glutenFree': return recipe[category] ? (<FlareIcon/>) : null;
+      case 'veryHealthy': return recipe[category] ? (<FavoriteBorderIcon/>) : null;
+      }
+  })
+};
+
+export default function Results() {
   let response = mock_response.results;
   let border = { border: '1px solid #000' };
 
@@ -15,6 +34,16 @@ export default function Results(): JSX.Element {
     };
 
     let nutrition = recipe.nutrition.nutrients;
+    
+    ///The values represent the index location in the response of a respective category
+    let dietaryCategories = {
+      "vegan": 1, 
+      "vegetarian": 0, 
+      "dairyFree": 3,
+      "glutenFree": 2, 
+      "veryHealthy": 4}
+    
+
     return (
       <Grid container item xs={12}>
         {Object.keys(nutrients).map((key) => (
@@ -28,6 +57,9 @@ export default function Results(): JSX.Element {
           </>
         ))}
         <Divider />
+        <Grid container item xs={12} sx={{ justifyContent: 'space-around' }}>
+           { getIcons(recipe)}
+          </Grid>
       </Grid>
     );
   };
@@ -48,9 +80,6 @@ export default function Results(): JSX.Element {
         />
         <CardContent>
           {getNutritionContent(recipe)}
-          {
-            //getIcons(recipe)}
-          }
         </CardContent>
       </Card>
     </Grid>
