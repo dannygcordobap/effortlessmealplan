@@ -1,9 +1,32 @@
-import { Box, Card, CardHeader, CardMedia, CardContent, Grid, Divider, Typography, Button } from '@mui/material';
+import { Box, Card, CardHeader, CardMedia, CardContent, Grid, Divider, Typography, Button, Link } from '@mui/material';
 import mock_response from '../util/mock_response.json';
 import React from 'react';
-import { Link } from '@mui/icons-material';
+import ModeFanOffIcon from '@mui/icons-material/ModeFanOff';
+import GrassIcon from '@mui/icons-material/Grass';
+import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import FlareIcon from '@mui/icons-material/Flare';
 
-export default function Results(): JSX.Element {
+const getIcons = (recipe) => {
+  let iconCategories = ['vegan', 'vegetarian', 'dairyFree', 'glutenFree', 'veryHealthy'];
+
+  return iconCategories.map((category) => {
+    switch (category) {
+      case 'vegan':
+        return recipe[category] === true ? <GrassIcon /> : null;
+      case 'vegetarian':
+        return recipe[category] === true ? <ModeFanOffIcon /> : null;
+      case 'dairyFree':
+        return recipe[category] === true ? <FiberManualRecordIcon /> : null;
+      case 'glutenFree':
+        return recipe[category] === true ? <FlareIcon /> : null;
+      case 'veryHealthy':
+        return recipe[category] === true ? <FavoriteBorderIcon /> : null;
+    }
+  });
+};
+
+export default function Results() {
   let response = mock_response.results;
 
   const getNutritionContent = (recipe) => {
@@ -15,6 +38,7 @@ export default function Results(): JSX.Element {
     };
 
     let nutrition = recipe.nutrition.nutrients;
+
     return (
       <Grid container item xs={12}>
         {Object.keys(nutrients).map((key) => (
@@ -28,6 +52,9 @@ export default function Results(): JSX.Element {
           </>
         ))}
         <Divider />
+        <Grid container item xs={12} sx={{ justifyContent: 'space-around' }}>
+          {getIcons(recipe)}
+        </Grid>
       </Grid>
     );
   };
@@ -51,12 +78,7 @@ export default function Results(): JSX.Element {
           alt={`Prepared ${recipe.title}`}
           sx={{ minWidth: '100%', overflow: 'hidden' }}
         />
-        <CardContent>
-          {getNutritionContent(recipe)}
-          {
-            //getIcons(recipe)}
-          }
-        </CardContent>
+        <CardContent>{getNutritionContent(recipe)}</CardContent>
       </Card>
     </Grid>
   );

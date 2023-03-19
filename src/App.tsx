@@ -1,6 +1,6 @@
 import './App.css';
 import React from 'react';
-import { AppBar, Box, CssBaseline, Toolbar, Typography, Divider, Grid } from '@mui/material';
+import { AppBar, Box, CssBaseline, Toolbar, Typography, Divider } from '@mui/material';
 import Form from './components/Form';
 import { LocalDining } from '@mui/icons-material';
 import Results from './components/Results';
