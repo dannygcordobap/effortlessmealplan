@@ -57,6 +57,8 @@ export default function Results(props) {
               <FavoriteBorderIcon sx={style} />
             </Tooltip>
           ) : null;
+        default:
+          return null;
       }
     });
   };
