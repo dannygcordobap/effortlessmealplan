@@ -24,7 +24,7 @@
   },
   "overrides": {
     "typescript": "^5.0.2"
-  }
+  },
   "scripts": {
     "start": "react-scripts start",
     "predeploy": "npm run build",
