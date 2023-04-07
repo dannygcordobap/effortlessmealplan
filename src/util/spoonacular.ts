@@ -1,5 +1,13 @@
 import { getRequestNutrientParameters, RequestNutrientParameters } from './conversions';
 
+export interface GetRecipesInput {
+  calories: number;
+  carbs: number;
+  fat: number;
+  protein: number;
+  tolerance: number;
+}
+
 const getRequestParameters = (requestData: RequestNutrientParameters) => {
   return {
     ...requestData,
@@ -20,13 +28,8 @@ const getQueryStringParameters = (parameters: RequestNutrientParameters): string
   return queryParams.join('&');
 };
 
-export default async function getRecipes(
-  carbs: number,
-  fat: number,
-  protein: number,
-  calories: number,
-  tolerance: number
-): Promise<any> {
+export default async function getRecipes(input: GetRecipesInput): Promise<any> {
+  let { calories, carbs, fat, protein, tolerance } = input;
   let requestParameters = getRequestParameters(getRequestNutrientParameters(carbs, fat, protein, calories, tolerance));
   let url = `https://api.spoonacular.com/recipes/complexSearch?${getQueryStringParameters(requestParameters)}`;
   return (await fetch(url)).json();
